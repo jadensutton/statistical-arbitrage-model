@@ -97,7 +97,7 @@ def generate_entry_signal(i):
                 for n, open in enumerate(pair1_opens):
                     spreads.append(math.log(open) - coint_coef * math.log(pair2_opens[n]))
 
-                kalman_spread = mean(spreads)
+                kalman_spread = kalman_filter(spreads)[-1]
                 gap = spreads[-1] - kalman_spread
 
                 if gap < 0:
@@ -124,7 +124,7 @@ def generate_entry_signal(i):
                     for n in range(m - 11, m + 1):
                         spreads.append(math.log(pair1_opens[n]) - coint_coef * math.log(pair2_opens[n]))
 
-                    kalman_spread = mean(spreads)
+                    kalman_spread = kalman_filter(spreads)[-1]
                     stdev_spread = stdev(spreads)
 
                     gap = spreads[-1] - kalman_spread
@@ -159,7 +159,7 @@ def generate_exit_signal(i, long_pair, short_pair, stop_loss, take_profit):
     for n, open in enumerate(long_pair_opens):
         spreads.append(math.log(open) - coint_coef * math.log(short_pair_opens[n]))
 
-    kalman_spread = mean(spreads)
+    kalman_spread = kalman_filter(spreads)[-1]
     stdev_spread = stdev(spreads)
 
     gap = spreads[-1] - kalman_spread
